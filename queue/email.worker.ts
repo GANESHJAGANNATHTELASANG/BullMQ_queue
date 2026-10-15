@@ -4,28 +4,33 @@ import { connection } from "./connection";
 const emailWorker = new Worker(
   "email-queue",
   async (job) => {
-    console.log("Processing job:", job.name);
+    console.log(`Processing job ${job.id}, attempt ${job.attemptsMade + 1}`);
 
     console.log("Email:", job.data.email);
-    console.log("Name:", job.data.name);
 
-    console.log("Sending welcome email...");
+    if (job.attemptsMade < 2) {
+      console.log("Email service is temporarily down ");
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      throw new Error("Email service is down");
+    }
 
+    console.log("Email service is working ");
     console.log("Email sent successfully!");
+
+    return {
+      success: true,
+    };
   },
   {
     connection,
-    concurrency: 3,
+    concurrency: 1,
   },
 );
 
 emailWorker.on("completed", (job) => {
-  console.log(`Job ${job.id} completed`);
-  console.log("----------------------------------------------------------");
+  console.log(`Job ${job.id} completed `);
 });
 
 emailWorker.on("failed", (job, err) => {
-  console.log(`Job ${job?.id} failed:`, err.message);
+  console.log(`Job ${job?.id} failed :`, err.message);
 });

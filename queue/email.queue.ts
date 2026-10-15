@@ -3,4 +3,7 @@ import { connection } from "./connection";
 
 export const emailQueue = new Queue("email-queue", {
   connection,
+  defaultJobOptions: {
+    attempts: 3,
+  },
 });
