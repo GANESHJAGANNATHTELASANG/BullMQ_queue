@@ -1,8 +1,10 @@
 import { emailQueue } from "./email.queue";
 
-const job = await emailQueue.add("send-welcome-email", {
-  email: "ganesh@gmail.com",
-  name: "Ganesh",
-});
+for (let i = 1; i <= 25; i++) {
+  const job = await emailQueue.add("send-welcome-email", {
+    email: `user${i}@gmail.com`,
+    name: `User ${i}`,
+  });
 
-console.log("Job added:", job.id);
+  console.log(`Job added: ${job.id}`);
+}
