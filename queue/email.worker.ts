@@ -17,11 +17,13 @@ const emailWorker = new Worker(
   },
   {
     connection,
+    concurrency: 3,
   },
 );
 
 emailWorker.on("completed", (job) => {
   console.log(`Job ${job.id} completed`);
+  console.log("----------------------------------------------------------");
 });
 
 emailWorker.on("failed", (job, err) => {
