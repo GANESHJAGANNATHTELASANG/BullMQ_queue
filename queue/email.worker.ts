@@ -4,7 +4,7 @@ import { connection } from "./connection";
 const emailWorker = new Worker(
   "email-queue",
   async (job) => {
-    console.log(`Processing: ${job.name}, priority: ${job.opts.priority}`);
+    console.log(`Processing: ${job.name}`);
 
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -12,10 +12,5 @@ const emailWorker = new Worker(
   },
   {
     connection,
-    concurrency: 3,
-    limiter: {
-      max: 5,
-      duration: 1000,
-    },
   },
 );
