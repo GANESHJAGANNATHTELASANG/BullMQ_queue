@@ -12,6 +12,10 @@ const emailWorker = new Worker(
   },
   {
     connection,
-    concurrency: 1,
+    concurrency: 3,
+    limiter: {
+      max: 5,
+      duration: 1000,
+    },
   },
 );

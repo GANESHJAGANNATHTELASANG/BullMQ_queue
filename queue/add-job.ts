@@ -1,33 +1,10 @@
 import { emailQueue } from "./email.queue";
 
-await emailQueue.add(
-  "normal-email",
-  {
-    email: "normal@gmail.com",
-  },
-  {
-    priority: 10,
-  },
-);
+for (let i = 1; i <= 10; i++) {
+  const job = await emailQueue.add("send-welcome-email", {
+    email: `user${i}@gmail.com`,
+    name: `User ${i}`,
+  });
 
-await emailQueue.add(
-  "password-reset",
-  {
-    email: "reset@gmail.com",
-  },
-  {
-    priority: 5,
-  },
-);
-
-await emailQueue.add(
-  "payment-processing",
-  {
-    email: "payment@gmail.com",
-  },
-  {
-    priority: 1,
-  },
-);
-
-console.log("3 jobs added");
+  console.log(`Job added: ${job.id}`);
+}
